@@ -1,0 +1,27 @@
+{
+  "name": "express-tdd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest --watch",
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omeruysal/node.js-TDD.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omeruysal/node.js-TDD/issues"
+  },
+  "homepage": "https://github.com/omeruysal/node.js-TDD#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "supertest": "^6.1.6"
+  }
+}
