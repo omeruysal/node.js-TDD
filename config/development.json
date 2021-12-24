@@ -1,0 +1,10 @@
+{
+  "database": {
+    "database": "twitter",
+    "username": "my-db-user",
+    "password": "password",
+    "dialect": "sqlite",
+    "storage": "./database.sqlite",
+    "logging": false
+  }
+}
