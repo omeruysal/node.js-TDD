@@ -12,6 +12,7 @@ beforeEach(() => {
   return User.destroy({ truncate: true }); //Before each test method we clear our db , truncate?
 });
 
+// Mock object
 const validUser = {
   username: 'user1',
   email: 'user1@mail.com',
@@ -55,20 +56,14 @@ describe('User Registration', () => {
   });
 
   it('returns 400 when username is null', async () => {
-    const response = await postUser({
-      username: null,
-      email: 'user1@mail.com',
-      password: 'Password1',
-    });
+    validUser.username = null;
+    const response = await postUser(validUser);
     expect(response.status).toBe(400);
   });
 
   it('returns validationErrors field in response body when validation error occurs', async () => {
-    const response = await postUser({
-      username: null,
-      email: 'user1@mail.com',
-      password: 'Password1',
-    });
+    validUser.username = null;
+    const response = await postUser(validUser);
     const body = response.body;
     expect(body.validationErrors).not.toBeUndefined();
   });
@@ -97,13 +92,30 @@ describe('User Registration', () => {
   ])('when %s is  %s, %s is received', async (field, value, expectedMessage) => {
     const user = {
       username: 'user1',
-      email: 'user1@email.com',
+      email: 'user1@mail.com',
       password: 'Password1',
     };
     user[field] = value;
     const response = await postUser(user);
     const body = response.body;
     expect(body.validationErrors[field]).toBe(expectedMessage);
+  });
+
+  it('returns E-mail in use when same email is already in use', async () => {
+    await User.create({ ...validUser });
+    const response = await postUser();
+    expect(response.body.validationErrors.email).toBe('Email in use');
+  });
+
+  it('returns errors for both username is null use and email is already in use', async () => {
+    await User.create({ ...validUser });
+    const response = await postUser({
+      username: null,
+      email: validUser.email,
+      password: 'Password1',
+    });
+    const body = response.body;
+    expect(Object.keys(body.validationErrors)).toEqual(['username', 'email']);
   });
 
   //  --------------- Created it.each() for the below test cases ----------------
